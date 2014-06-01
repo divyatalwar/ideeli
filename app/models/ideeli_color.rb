@@ -21,3 +21,5 @@ class IdeeliColor < ActiveRecord::Base
   def notify_publishability_upchain!
     product.notify_publishability_change! if product
   end
+
+end
