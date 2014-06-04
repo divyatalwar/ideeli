@@ -17,6 +17,7 @@ class IdeeliColor < ActiveRecord::Base
     publishing_errors.add(:name, 'must not be blank') if name.blank?
     logger.info "PR: Checking if skus exists"
     publishing_errors.add(:base, "Must have at least one sku") if skus.length.zero?
+    logger.info "PR: Checking if any sku is unpublishable"
     publishing_errors.add(:base, "All skus must be publishable") if skus.any? {|x| "PR: SKU: #{{X}}" !x.publishable_without_caching? }
   end
 

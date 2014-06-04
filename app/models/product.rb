@@ -29,7 +29,7 @@ class Product < ActiveRecord::Base
     publishing_errors.add(:spec, 'must be set') if spec.blank?
     logger.info "PR: Checking if colors exists"
     publishing_errors.add(:base, 'Must have at least one color') if colors.length.zero?
-    logger.info "PR: Checking if colors are publishable"
+    logger.info "PR: Checking if any color is unpublishable"
     publishing_errors.add(:base,'One or more colors are unpublishable') if colors.any? {|x| !x.publishable_without_caching? }
   end
 

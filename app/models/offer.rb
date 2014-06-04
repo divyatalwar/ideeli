@@ -18,7 +18,7 @@ class Offer < ActiveRecord::Base
 		publishing_errors.add(:canceled_at, 'cannot be set') if canceled?   
 		logger.info "PR: Checking if product exists" 
 		publishing_errors.add(:product_id, 'must exist') unless product
-		logger.info "PR: Checking if product is publishable"
+		logger.info "PR: Checking if product is unpublishable"
 		publishing_errors.add(:product_id, 'must be publishable') if product && !product.publishable_without_caching?
 		publishing_errors.add(:msrp,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? {|s| logger.info "PR: SKU - msrp : #{s.id}" s.msrp.cents <= 0}
 		publishing_errors.add(:price,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? {|s| logger.info "PR: SKU - price : #{s.id}" s.price.cents <= 0}
