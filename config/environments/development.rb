@@ -26,4 +26,11 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+  # config.after_initialize do
+  #   ActiveRecord::Base.logger = Rails.logger.clone
+  #   ActiveRecord::Base.logger.level = Logger::INFO
+  # end
+  # ActiveRecord::Base.logger.silence do
+  # # the stuff you want to be silenced
+  # end
 end

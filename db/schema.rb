@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603144440) do
+ActiveRecord::Schema.define(version: 20140604131835) do
 
   create_table "colors", force: true do |t|
     t.integer  "product_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20140603144440) do
     t.string  "strapline"
     t.string  "brand_name"
     t.integer "info_id"
+    t.integer "publishable_flag", limit: 1
   end
 
   create_table "shopping_event_groups", force: true do |t|

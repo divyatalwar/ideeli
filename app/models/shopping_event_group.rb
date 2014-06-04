@@ -8,9 +8,9 @@ class ShoppingEventGroup < ActiveRecord::Base
   end
 
   def check_publishing_rules
-    logger.info "PR: Checking if shopping events exists"
+    logger.info "PR : SEG : Checking if shopping events exists"
     publishing_errors.add(:base, 'No shopping events assigned to this group') if shopping_events.length.zero?
-    logger.info "PR: Checking if any shopping_event is unpublishable"
+    logger.info "PR : SEG : Checking if any shopping_event is unpublishable"
     publishing_errors.add(:base, 'One or more shopping events are unpublishable') unless shopping_events.select {|s| !s.publishable? }.all?(&:publishable_without_caching?)
   end
 

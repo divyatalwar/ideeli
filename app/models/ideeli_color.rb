@@ -15,10 +15,10 @@ class IdeeliColor < ActiveRecord::Base
 
   def check_publishing_rules
     publishing_errors.add(:name, 'must not be blank') if name.blank?
-    logger.info "PR: Checking if skus exists"
+    logger.info "PR : C : Checking if skus exists"
     publishing_errors.add(:base, "Must have at least one sku") if skus.length.zero?
-    logger.info "PR: Checking if any sku is unpublishable"
-    publishing_errors.add(:base, "All skus must be publishable") if skus.any? {|x| "PR: SKU: #{{X}}" !x.publishable_without_caching? }
+    logger.info "PR : C : Checking if any sku is unpublishable"
+    publishing_errors.add(:base, "All skus must be publishable") if skus.any? do |x| "PR: C : SKU: #{x.id}"; !x.publishable_without_caching? end
   end
 
   def notify_publishability_upchain!

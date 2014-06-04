@@ -21,7 +21,7 @@ class ShoppingEvent < ActiveRecord::Base
        
     publishing_errors.add(:brand, 'must not be blank') if brand.blank?
     publishing_errors.add(:canceled_at, 'cannot be set') if canceled_at?
-    logger.info "PR: Checking if offers exists"
+    logger.info "PR : SE : Checking if offers exists"
 
     publishing_errors.add(:base, "Must have at least one associated offer") if offers.length.zero?
    
@@ -35,7 +35,7 @@ class ShoppingEvent < ActiveRecord::Base
   
   def check_publishing_rules
     check_publishing_rules_without_offers
-    logger.info "PR: Checking if any offer is unpublishable"
+    logger.info "PR : SE : Checking if any offer is unpublishable"
     publishing_errors.add(:base, "One or more offers are unpublishable") unless offers.all?(&:publishable_without_caching?)
     # publishing_errors.add_to_base("All offers have no units available at event start") unless full_skus.any? { |sku| sku.available_to_sell(start_at) > 0 }
   end

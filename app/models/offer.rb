@@ -16,12 +16,12 @@ class Offer < ActiveRecord::Base
 
 	def check_publishing_rules
 		publishing_errors.add(:canceled_at, 'cannot be set') if canceled?   
-		logger.info "PR: Checking if product exists" 
+		logger.warn "PR : O : Checking if product exists" 
 		publishing_errors.add(:product_id, 'must exist') unless product
-		logger.info "PR: Checking if product is unpublishable"
+		logger.info "PR : O : Checking if product is unpublishable"
 		publishing_errors.add(:product_id, 'must be publishable') if product && !product.publishable_without_caching?
-		publishing_errors.add(:msrp,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? {|s| logger.info "PR: SKU - msrp : #{s.id}" s.msrp.cents <= 0}
-		publishing_errors.add(:price,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? {|s| logger.info "PR: SKU - price : #{s.id}" s.price.cents <= 0}
+		publishing_errors.add(:msrp,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? do |s| logger.info "PR: O : SKU - msrp : #{s.id}"; s.msrp.cents <= 0 end
+		publishing_errors.add(:price,  'must be more than $0 for all of the skus in a non-sweepstake offer') if !sweepstake? && all_skus.to_a.any? do |s| logger.info "PR: O : SKU - price : #{s.id}"; s.price.cents <= 0 end
 	end
 	
 	def notify_publishability_upchain!

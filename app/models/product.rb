@@ -16,7 +16,7 @@ class Product < ActiveRecord::Base
   def notify_publishability_change!(first_link = true)
     self.publishable_flag = publishable_without_caching?
     if first_link 
-      connection.execute("update product_infos set publishable_flag = #{publishable_flag} where id = #{info_id}")
+      ActiveRecord::Base.connection.execute("update product_infos set publishable_flag = #{publishable_flag} where id = #{info_id}")
     end
 
     notify_publishability_upchain!
@@ -27,15 +27,15 @@ class Product < ActiveRecord::Base
     publishing_errors.add(:strapline, 'must be set') if strapline.blank?
     publishing_errors.add(:brand_name, 'must be set') if brand_name.blank?    
     publishing_errors.add(:spec, 'must be set') if spec.blank?
-    logger.info "PR: Checking if colors exists"
+    logger.info "PR : P : Checking if colors exists"
     publishing_errors.add(:base, 'Must have at least one color') if colors.length.zero?
-    logger.info "PR: Checking if any color is unpublishable"
+    logger.info "PR : P : Checking if any color is unpublishable"
     publishing_errors.add(:base,'One or more colors are unpublishable') if colors.any? {|x| !x.publishable_without_caching? }
   end
 
   def notify_publishability_upchain!
 
-    offers.each { |o|  logger.info 'UPCHAIN: Offer : #{o.id}' o.notify_publishability_change! } 
+    offers.each do |o|  logger.warn 'UPCHAIN: Offer : #{o.id}'; o.notify_publishability_change! end
   end
 
 
