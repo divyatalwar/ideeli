@@ -1,0 +1,2 @@
+class Sweepstake < Offer
+end

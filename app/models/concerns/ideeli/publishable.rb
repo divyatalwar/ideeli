@@ -6,7 +6,7 @@ module Ideeli
       write_attribute(:publishable_flag, publishable_without_caching?)
 
       if first_link  # save on first link: can't use save() due to callback
-        connection.execute("update #{self.class.table_name} set publishable_flag = #{publishable_flag} where id = #{id}")
+        ActiveRecord::Base.connection.execute("update #{self.class.table_name} set publishable_flag = #{publishable_flag} where id = #{id}")
         if self.is_a?(ShoppingEvent) && self.event_has_become_unpublishable?
           logger.info "AdminNotification: event become unpublishable id##{id}"
           # AdminMailer.deliver_event_become_unpublishable(self)

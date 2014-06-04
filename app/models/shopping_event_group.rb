@@ -1,6 +1,6 @@
 class ShoppingEventGroup < ActiveRecord::Base
   include Ideeli::Publishable
-  has_many :shopping_events, :foreign_key => 'group_id', :order => 'group_position', :dependent => :nullify
+  has_many :shopping_events, :foreign_key => 'group_id', :dependent => :nullify
 
   def publishable_with_caching?
     return false if shopping_events.empty?
@@ -8,8 +8,10 @@ class ShoppingEventGroup < ActiveRecord::Base
   end
 
   def check_publishing_rules
-    publishing_errors.add_to_base('No shopping events assigned to this group') if shopping_events.length.zero?
-    publishing_errors.add_to_base('One or more shopping events are unpublishable') unless shopping_events.select {|s| !s.publishable? }.all?(&:publishable_without_caching?)
+    logger.info "PR: Checking if shopping events exists"
+    publishing_errors.add(:base, 'No shopping events assigned to this group') if shopping_events.length.zero?
+    logger.info "PR: Checking if shopping_events are publishable"
+    publishing_errors.add(:base, 'One or more shopping events are unpublishable') unless shopping_events.select {|s| !s.publishable? }.all?(&:publishable_without_caching?)
   end
 
   def after_save
@@ -19,3 +21,4 @@ class ShoppingEventGroup < ActiveRecord::Base
       event.save!
     end
   end
+end
